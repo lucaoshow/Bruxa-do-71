@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using Root.Runes;
 using System;
+using UnityEditor.Rendering;
 
 namespace Root.EditorExtensions.PropertyDrawers
 {
@@ -19,7 +20,7 @@ namespace Root.EditorExtensions.PropertyDrawers
             {
                 int pos = int.Parse(property.propertyPath.Split('[', ']')[1]);
                 string name = ((MergeConfigurationProperty)attribute).names[pos];
-                if (!name.Equals(property.serializedObject.targetObject.GetType().Name))
+                if (!name.Equals(property.serializedObject.FindProperty("runeType").GetEnumName<MergeableRuneTypes>()))
                 {
                     EditorGUI.ObjectField(rect, property, new GUIContent(((MergeConfigurationProperty)attribute).names[pos]));
                 }

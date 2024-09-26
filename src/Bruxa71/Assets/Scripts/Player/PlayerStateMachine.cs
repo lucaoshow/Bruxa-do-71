@@ -5,6 +5,7 @@ namespace Root.Player
     public class PlayerStateMachine : MonoBehaviour
     {
         [SerializeField] private PlayerMovement playerMovement;
+        [SerializeField] private PlayerRunesManager runesManager;
 
         private Vector2 moveDirection;
         private enum PlayerStates
