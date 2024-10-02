@@ -21,11 +21,6 @@ namespace Root.EditorExtensions.CustomErrorLoggers
                 string typeName = prefabsNames[i];
                 MergeableRune rune = runesPrefabsScripts[i];
 
-                if (rune.GetRuneEffect() == null)
-                {
-                    Debug.LogError(typeName + " prefab does not have a RuneEffect assigned, this will cause errors when trying to activate the rune. Fix this issue by dragging a RuneEffect prefab to the correspondent Rune Effect field on the " + typeName + " prefab.");
-                }
-
                 foreach (MergeableRuneTypes mergeableRuneType in enumVals)
                 {
                     string enumTypeName = mergeableRuneType.ToString();

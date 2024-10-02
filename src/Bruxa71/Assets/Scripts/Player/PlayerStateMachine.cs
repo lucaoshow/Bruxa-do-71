@@ -33,6 +33,7 @@ namespace Root.Player
         private void ChangeStateBasedOnInput()
         {
             float movement = Input.GetAxisRaw("Horizontal");
+            bool activateRune = Input.GetKeyDown(KeyCode.E);
 
             if (movement != 0)
             {
@@ -42,6 +43,11 @@ namespace Root.Player
             else
             {
                 this.state = PlayerStates.Idle;
+            }
+
+            if (activateRune) 
+            {
+                this.runesManager.ActivateSelectedRune(this.moveDirection);
             }
         }
         

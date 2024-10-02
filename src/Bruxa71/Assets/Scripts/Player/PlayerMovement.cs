@@ -16,7 +16,7 @@ namespace Root.Player
 
         private void Start()
         {
-            this.timeStopping = this.secondsToStop;   
+            this.timeStopping = this.maxSecondsToStop;   
         }
 
         public void Stop()
