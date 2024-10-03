@@ -1,4 +1,3 @@
-using System;
 using Root.EditorExtensions.PropertyDrawers;
 using UnityEngine;
 
@@ -49,7 +48,7 @@ namespace Root.Projectiles
 
         private void Update()
         {
-            if (Math.Abs(this.trajectoryRange.normalized.x) < Math.Abs(this.trajectoryRange.normalized.y)) 
+            if (Mathf.Abs(this.trajectoryRange.normalized.x) < Mathf.Abs(this.trajectoryRange.normalized.y)) 
             {
                 this.UpdatePositionForHorizontalTrajectory();
             }
@@ -65,7 +64,7 @@ namespace Root.Projectiles
             }
         }
 
-        public void SetDirection(Vector2 direction) 
+        public void SetDirection(Vector3 direction) 
         {
             this.direction = direction;
         }
@@ -76,17 +75,17 @@ namespace Root.Projectiles
             {
                 this.RotateAround(this.rotateAround.position, this.rotateAround.forward, this.spinSpeed);
                 this.rotateAround.position += this.direction * this.moveSpeed * Time.deltaTime;
-                this.moveSpeed = this.moveSpeedCurve.Evaluate(this.rotateAround.position.normalized.x) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.y);
-                this.spinSpeed = this.spinSpeedCurve.Evaluate(this.rotateAround.position.normalized.x) * this.maxSpinSpeed * Mathf.Sign(this.trajectoryRange.y);
+                this.moveSpeed = this.moveSpeedCurve.Evaluate(Mathf.Abs(this.rotateAround.position.normalized.y)) * this.maxMoveSpeed;
+                this.spinSpeed = this.spinSpeedCurve.Evaluate(Mathf.Abs(this.rotateAround.position.normalized.y)) * this.maxSpinSpeed;
                 return;
             }
 
             float nextY = this.transform.position.y + this.moveSpeed * Time.deltaTime;
-            float nextYNormalized = (nextY - this.startPoint.y) / this.maxTravelDistance;
-
+            float nextYNormalized = Mathf.Abs((nextY - this.startPoint.y) / this.maxTravelDistance);
+            
             float nextXNormalized = this.trajectory.Evaluate(nextYNormalized);
 
-            float nextX = this.startPoint.x + nextXNormalized * this.MAX_HEIGHT;
+            float nextX = this.startPoint.x + nextXNormalized * this.MAX_HEIGHT + nextYNormalized * trajectoryRange.x;
 
             Vector3 newPosition = new Vector3(nextX, nextY, 0);
 
@@ -98,7 +97,7 @@ namespace Root.Projectiles
 
             this.transform.position = newPosition;
 
-            this.moveSpeed = this.moveSpeedCurve.Evaluate(nextYNormalized) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.x);
+            this.moveSpeed = this.moveSpeedCurve.Evaluate(nextYNormalized) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.y);
         }
 
         private void UpdatePositionForVerticalTrajectory() 
@@ -107,17 +106,17 @@ namespace Root.Projectiles
             {
                 this.RotateAround(this.rotateAround.position, this.rotateAround.forward, this.spinSpeed);
                 this.rotateAround.position += this.direction * this.moveSpeed * Time.deltaTime;
-                this.moveSpeed = this.moveSpeedCurve.Evaluate(this.rotateAround.position.normalized.y) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.x);
-                this.spinSpeed = this.spinSpeedCurve.Evaluate(this.rotateAround.position.normalized.y) * this.maxSpinSpeed * Mathf.Sign(this.trajectoryRange.x);
+                this.moveSpeed = this.moveSpeedCurve.Evaluate(Mathf.Abs(this.rotateAround.position.normalized.x)) * this.maxMoveSpeed;
+                this.spinSpeed = this.spinSpeedCurve.Evaluate(Mathf.Abs(this.rotateAround.position.normalized.x)) * this.maxSpinSpeed;
                 return;
             }
 
             float nextX = this.transform.position.x + this.moveSpeed * Time.deltaTime;
-            float nextXNormalized = (nextX - this.startPoint.x) / this.maxTravelDistance;
+            float nextXNormalized = Mathf.Abs((nextX - this.startPoint.x) / this.maxTravelDistance);
 
-            float nextYNormalized = this.trajectory.Evaluate(Math.Abs(nextXNormalized));
+            float nextYNormalized = this.trajectory.Evaluate(Mathf.Abs(nextXNormalized));
 
-            float nextY = this.startPoint.y + nextYNormalized * this.MAX_HEIGHT;
+            float nextY = this.startPoint.y + nextYNormalized * this.MAX_HEIGHT + nextXNormalized * trajectoryRange.y;
 
             Vector3 newPosition = new Vector3(nextX, nextY, 0);
 
@@ -129,7 +128,7 @@ namespace Root.Projectiles
 
             this.transform.position = newPosition;
 
-            this.moveSpeed = this.moveSpeedCurve.Evaluate(Math.Abs(nextXNormalized)) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.y);
+            this.moveSpeed = this.moveSpeedCurve.Evaluate(Mathf.Abs(nextXNormalized)) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.x);
         }
 
         private void RotateAround(Vector3 center, Vector3 axis, float angle)

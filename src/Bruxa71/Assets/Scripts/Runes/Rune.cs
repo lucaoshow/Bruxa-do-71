@@ -41,7 +41,7 @@ namespace Root.Runes
             }
         }
 
-        public virtual void Activate(PlayerRunesManager player, Vector2 playerLookingDir)
+        public virtual void Activate(PlayerRunesManager player, Vector3 playerLookingDir)
         {
             if (this.inCooldown)
             {

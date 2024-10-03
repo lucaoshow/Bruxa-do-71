@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Root.Player
 {
@@ -6,7 +7,8 @@ namespace Root.Player
     {
         [SerializeField] private PlayerMovement playerMovement;
         [SerializeField] private PlayerRunesManager runesManager;
-
+        [SerializeField] private InputActionAsset inputActions;
+        private InputAction moveAction;
         private Vector2 moveDirection;
         private enum PlayerStates
         {
@@ -14,6 +16,12 @@ namespace Root.Player
             Walking
         }
         private PlayerStates state;
+
+        private void Awake() 
+        {
+            this.moveAction = this.inputActions.FindActionMap("Movement").FindAction("move");
+            this.moveAction.Enable();
+        }
 
         private void Update()
         {
@@ -32,23 +40,17 @@ namespace Root.Player
 
         private void ChangeStateBasedOnInput()
         {
-            float movement = Input.GetAxisRaw("Horizontal");
-            bool activateRune = Input.GetKeyDown(KeyCode.E);
+            this.moveDirection = this.moveAction.ReadValue<Vector2>().normalized;
 
-            if (movement != 0)
+            if (this.moveDirection != Vector2.zero)
             {
                 this.state = PlayerStates.Walking;
-                this.moveDirection = new Vector2(movement, 0);
             }
             else
             {
                 this.state = PlayerStates.Idle;
             }
 
-            if (activateRune) 
-            {
-                this.runesManager.ActivateSelectedRune(this.moveDirection);
-            }
         }
         
     }
