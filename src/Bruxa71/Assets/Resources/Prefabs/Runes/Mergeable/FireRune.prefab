@@ -54,11 +54,15 @@ MonoBehaviour:
     distanceTraveled: {x: 0, y: 0}
   effectOnEnemy:
     duration: 0
+    radius: 0
+    activateInstantaneously: 0
+    continuous: 0
     attackDebuff: 0
     speedDebuff: 0
   projectile: {fileID: 717328409722463468, guid: 070c7f241ad5fb345bac6da1ce7d2f5c, type: 3}
   runeType: 0
   mergeConfiguration:
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!212 &2058052248263349968
 SpriteRenderer:

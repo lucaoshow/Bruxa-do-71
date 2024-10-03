@@ -50,7 +50,7 @@ MonoBehaviour:
   maxTravelDistance: 20
   maxMoveSpeed: 0.5
   matchRotationToDirection: 1
-  circularTrajectory: 1
+  circularTrajectory: 0
   distanceFromCenter: 0.5
   maxSpinSpeed: 2
   spinSpeedCurve:
@@ -77,7 +77,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxHeight: 5
+  maxHeight: 10
   trajectory:
     serializedVersion: 2
     m_Curve:
@@ -91,22 +91,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.28815424
-      value: 0.007008314
-      inSlope: 0.48229697
-      outSlope: 0.48229697
+      time: 0.45349553
+      value: 1.0001385
+      inSlope: 0.005838215
+      outSlope: 0.005838215
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5326879
-      value: 0.07906468
-      inSlope: 0.012771536
-      outSlope: 0.012771536
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.42175236
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1.001709

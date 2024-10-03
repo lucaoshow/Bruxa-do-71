@@ -22,13 +22,11 @@ namespace Root.Projectiles
         [SerializeField] private AnimationCurve spinSpeedCurve;
 
         [DrawIf("circularTrajectory", false)]
-        [SerializeField] private float maxHeight;
-
-        [DrawIf("circularTrajectory", false)]
         [SerializeField] private AnimationCurve trajectory;
 
         [SerializeField] private AnimationCurve moveSpeedCurve;
 
+        private readonly float MAX_HEIGHT = 10f;
         private Vector3 direction;
         private float timeAlive;
         private Vector3 startPoint;
@@ -88,7 +86,7 @@ namespace Root.Projectiles
 
             float nextXNormalized = this.trajectory.Evaluate(nextYNormalized);
 
-            float nextX = this.startPoint.x + nextXNormalized * this.maxHeight;
+            float nextX = this.startPoint.x + nextXNormalized * this.MAX_HEIGHT;
 
             Vector3 newPosition = new Vector3(nextX, nextY, 0);
 
@@ -119,7 +117,7 @@ namespace Root.Projectiles
 
             float nextYNormalized = this.trajectory.Evaluate(Math.Abs(nextXNormalized));
 
-            float nextY = this.startPoint.y + nextYNormalized * this.maxHeight;
+            float nextY = this.startPoint.y + nextYNormalized * this.MAX_HEIGHT;
 
             Vector3 newPosition = new Vector3(nextX, nextY, 0);
 
