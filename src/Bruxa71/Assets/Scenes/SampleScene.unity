@@ -390,8 +390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9aa5d6554e77343b05247b02055205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  playerData: {fileID: 11400000, guid: c79e2ef0a4d87794cb6b9b614b7f71b0, type: 2}
   maxSecondsToStop: 0.5
+  rigidBody: {fileID: 927102880}
 --- !u!50 &927102880
 Rigidbody2D:
   serializedVersion: 4
@@ -498,9 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc6a3762c4776440ac6de063732bccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runes:
-  - {fileID: 5004297823718194144, guid: 471c3f4537a2895498f3446f532a9dff, type: 3}
   inputActions: {fileID: -944628639613478452, guid: 465ca14644098924398dfb0c42724f61, type: 3}
+  playerData: {fileID: 11400000, guid: c79e2ef0a4d87794cb6b9b614b7f71b0, type: 2}
 --- !u!95 &927102884
 Animator:
   serializedVersion: 5

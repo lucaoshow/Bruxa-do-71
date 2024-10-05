@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Root.Runes;
 using UnityEngine.InputSystem;
@@ -7,8 +6,8 @@ namespace Root.Player
 {
     public class PlayerRunesManager : MonoBehaviour
     {
-        [SerializeField] private List<Rune> runes;
-        [SerializeField] private InputActionAsset inputActions;
+         [SerializeField] private InputActionAsset inputActions;
+        [SerializeField] private PlayerData playerData;
         private InputAction shootLeft;
         private InputAction shootRight;
         private InputAction changeLeft;
@@ -31,7 +30,11 @@ namespace Root.Player
             this.changeLeft.Enable();
             this.changeRight.Enable();
             this.aim.Enable();
-            this.leftSelected = this.runes[0];
+            this.leftSelected = this.playerData.runes[0];
+            foreach (Rune rune in this.playerData.runes) 
+            {
+                Instantiate(rune, this.transform.position, Quaternion.identity, this.transform);
+            }
         }
 
         private void Update()
@@ -47,17 +50,23 @@ namespace Root.Player
             }
         }
 
+        public void AddStatus(EffectOnPlayer status)
+        {
+            this.transform.position += (this.GetAimPosition() - this.transform.position).normalized * status.distanceToTravel;
+            this.playerData.moveSpeed += status.speedBuff;
+        }
+
         private void ActivateRune(Rune rune) 
+        {
+            rune.Activate(this, (this.GetAimPosition() - this.transform.position).normalized);
+        }
+
+        private Vector3 GetAimPosition() 
         {
             Vector2 aimScreenPos = this.aim.ReadValue<Vector2>();
             Vector3 aimPos = Camera.main.ScreenToWorldPoint(new Vector3(aimScreenPos.x, aimScreenPos.y, 0));
             aimPos.z = 0;
-            rune.Activate(this, (new Vector3(aimPos.x, aimPos.y, 0) - this.transform.position).normalized);
-        }
-
-        public void AddStatus(EffectOnPlayer status)
-        {
-
+            return aimPos;
         }
     }
 }

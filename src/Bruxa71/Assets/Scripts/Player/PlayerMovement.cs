@@ -4,16 +4,15 @@ namespace Root.Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private float moveSpeed;
+        [SerializeField] private PlayerData playerData;
         [SerializeField] private float maxSecondsToStop;
-        private Rigidbody2D rigidBody;
+        [SerializeField] private Rigidbody2D rigidBody;
         private Vector2 lastDir;
         private float secondsToStop;
         private float timeStopping;
 
         private void Start()
         {
-            this.rigidBody = this.gameObject.GetComponent<Rigidbody2D>();
             this.timeStopping = this.maxSecondsToStop;   
         }
 
@@ -21,7 +20,7 @@ namespace Root.Player
         {
             if (this.timeStopping <= this.secondsToStop)
             {
-                this.rigidBody.velocity = Vector2.Lerp(this.moveSpeed * this.lastDir, Vector2.zero, this.timeStopping / this.secondsToStop);
+                this.rigidBody.velocity = Vector2.Lerp(this.playerData.moveSpeed * this.lastDir, Vector2.zero, this.timeStopping / this.secondsToStop);
                 this.timeStopping += Time.deltaTime;
                 // play sliding animation
             }
@@ -35,7 +34,7 @@ namespace Root.Player
 
         public void Move(Vector2 moveDir)
         {
-            this.rigidBody.velocity = moveDir * this.moveSpeed;
+            this.rigidBody.velocity = moveDir * this.playerData.moveSpeed;
 
             this.timeStopping = 0;
 

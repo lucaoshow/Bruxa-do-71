@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.Animations;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace Root.Runes
 {
@@ -26,7 +27,19 @@ namespace Root.Runes
 
         private bool inCooldown = false;
         private float timeSinceLastUse = 0f;
+        private int effectApplied = 0;
+        private float effectDuration;
+        private float effectDurationCount = 0f;
+        private SpriteRenderer spriteRenderer;
+        private UnityEvent<EffectOnPlayer> applyOnPlayer = new UnityEvent<EffectOnPlayer>();
 
+        private void Start()
+        {
+            this.effectDuration = this.effectType == RuneEffectTypes.EffectOnPlayer ? this.effectOnPlayer.duration : this.effectOnEnemy.duration;
+            this.spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+            this.spriteRenderer.enabled = false;
+        }
+        
         private void Update() 
         {
             if (this.inCooldown)
@@ -39,14 +52,29 @@ namespace Root.Runes
 
                 this.timeSinceLastUse += Time.deltaTime;
             }
+
+            if (this.effectApplied > 0 ) 
+            {
+                if (this.effectDurationCount >= this.effectDuration) 
+                {
+                    this.effectDurationCount = 0f - Time.deltaTime;
+                    this.effectApplied--;
+                    this.applyOnPlayer.Invoke(-this.effectOnPlayer);
+                }
+
+                this.effectDurationCount += Time.deltaTime;
+            }
         }
 
-        public virtual void Activate(PlayerRunesManager player, Vector3 playerLookingDir)
+        public void Activate(PlayerRunesManager player, Vector3 playerLookingDir)
         {
             if (this.inCooldown)
             {
                 return;
             }
+
+            this.spriteRenderer.enabled = true;
+            this.applyOnPlayer.AddListener(player.AddStatus);
 
             switch (this.effectType)
             {
@@ -55,31 +83,33 @@ namespace Root.Runes
                     AnimationClip anim = this.animator.runtimeAnimatorController.animationClips[0];
                     AnimationEvent animEvent = new AnimationEvent();
                     animEvent.functionName = "OnEffectAnimationEnd";
-                    animEvent.objectReferenceParameter = player;
                     animEvent.time = anim.length;
                     anim.AddEvent(animEvent);
-                    this.animator.SetTrigger("start");
                     break;
                 
                 case RuneEffectTypes.ThrowProjectile:
-                    Projectile proj = Instantiate(this.projectile, player.transform.position, Quaternion.identity);
+                    Projectile proj = Instantiate(this.projectile, this.transform.position, Quaternion.identity);
                     proj.SetDirection(playerLookingDir);
-                    this.animator.SetTrigger("start");
                     break;
             }
+            
+            this.animator.SetTrigger("start");
         }
 
-        public void OnEffectAnimationEnd(PlayerRunesManager player) 
+        public void OnEffectAnimationEnd() 
         {
+            this.spriteRenderer.enabled = false;
             switch (this.effectType)
             {
                 case RuneEffectTypes.EffectOnPlayer:
-                    player.AddStatus(this.effectOnPlayer);
+                    this.applyOnPlayer.Invoke(this.effectOnPlayer);
                     break;
                 case RuneEffectTypes.EffectOnEnemy:
-                    
+                    // waiting for any implemented enemies
                     break;
             }
+
+            this.effectApplied++;
         }
 
         private void OnValidate()
@@ -113,6 +143,12 @@ namespace Root.Runes
             {
                 this.animator = this.gameObject.AddComponent<Animator>();
                 Debug.Log("Added Animator component for the animation that will be triggered once the rune effect is applied.");
+            }
+
+            if (!this.TryGetComponent(out SpriteRenderer spr)) 
+            {
+                this.gameObject.AddComponent<SpriteRenderer>();
+                Debug.Log("Added SpriteRenderer component so animations are supported.");
             }
         }
 

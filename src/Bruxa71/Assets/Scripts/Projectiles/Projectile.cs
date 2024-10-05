@@ -5,7 +5,11 @@ namespace Root.Projectiles
 {
     public class Projectile : MonoBehaviour 
     {
+        [SerializeField] private bool lifespanInSeconds;
+        
+        [DrawIf("lifespanInSeconds", true)]
         [SerializeField] private float secondsLifespan = -1;
+
         [SerializeField] private float maxTravelDistance;
         [SerializeField] private float maxMoveSpeed;
         [SerializeField] private bool matchRotationToDirection;
@@ -50,11 +54,11 @@ namespace Root.Projectiles
         {
             if (Mathf.Abs(this.trajectoryRange.normalized.x) < Mathf.Abs(this.trajectoryRange.normalized.y)) 
             {
-                this.UpdatePositionForHorizontalTrajectory();
+                this.UpdatePositionForVerticalTrajectory();
             }
             else 
             {
-                this.UpdatePositionForVerticalTrajectory();
+                this.UpdatePositionForHorizontalTrajectory();
             }
 
             if ((this.transform.position - this.startPoint).magnitude >= this.maxTravelDistance || (this.secondsLifespan > -1 && this.timeAlive >= this.secondsLifespan)) 
@@ -69,7 +73,7 @@ namespace Root.Projectiles
             this.direction = direction;
         }
 
-        private void UpdatePositionForHorizontalTrajectory() 
+        private void UpdatePositionForVerticalTrajectory() 
         {
             if (this.circularTrajectory) 
             {
@@ -100,7 +104,7 @@ namespace Root.Projectiles
             this.moveSpeed = this.moveSpeedCurve.Evaluate(nextYNormalized) * this.maxMoveSpeed * Mathf.Sign(this.trajectoryRange.y);
         }
 
-        private void UpdatePositionForVerticalTrajectory() 
+        private void UpdatePositionForHorizontalTrajectory() 
         {
             if (this.circularTrajectory) 
             {
@@ -165,6 +169,11 @@ namespace Root.Projectiles
             if (added)
             {
                 Debug.Log("Added the necessary components for the projectile animation. Please, add the correspondent Animator Controller to the Animator component and a collider shape to this GameObject (" + this.gameObject.name + ").");
+            }
+
+            if (!this.lifespanInSeconds) 
+            {
+                this.secondsLifespan = -1;
             }
         }
 
