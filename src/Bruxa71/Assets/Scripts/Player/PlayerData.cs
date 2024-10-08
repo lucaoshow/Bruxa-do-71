@@ -10,6 +10,11 @@ namespace Root.Player
         public float health;
         public float maxHealth;
         public float moveSpeed;
-        public List<Rune> runes;
+        public List<Rune> runes { get; private set; } = new List<Rune>();
+
+        public void AddRune(Rune rune)
+        {
+            this.runes.Add(rune);
+        }
     }
 }

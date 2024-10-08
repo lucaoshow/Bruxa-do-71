@@ -14,7 +14,9 @@ namespace Root.Player
         private InputAction changeRight;
         private InputAction aim;
         private Rune leftSelected;
+        private int leftIndex;
         private Rune rightSelected;
+        private int rightIndex;
 
         private void Awake()
         {
@@ -30,7 +32,7 @@ namespace Root.Player
             this.changeLeft.Enable();
             this.changeRight.Enable();
             this.aim.Enable();
-            this.leftSelected = this.playerData.runes[0];
+
             foreach (Rune rune in this.playerData.runes) 
             {
                 Instantiate(rune, this.transform.position, Quaternion.identity, this.transform);
@@ -47,6 +49,20 @@ namespace Root.Player
             if (this.shootRight.WasPressedThisFrame())
             {
                 this.ActivateRune(this.rightSelected);
+            }
+
+            if (this.changeLeft.WasPressedThisFrame())
+            {
+                this.leftIndex = this.UpdateSelectedIndex(this.leftIndex, this.rightIndex);
+                this.leftSelected = this.playerData.runes[this.leftIndex];
+                // change image accordingly
+            }
+
+            if (this.changeRight.WasPressedThisFrame())
+            {
+                this.rightIndex = this.UpdateSelectedIndex(this.rightIndex, this.leftIndex);
+                this.rightSelected = this.playerData.runes[this.rightIndex];
+                // change image accordingly
             }
         }
 
@@ -67,6 +83,14 @@ namespace Root.Player
             Vector3 aimPos = Camera.main.ScreenToWorldPoint(new Vector3(aimScreenPos.x, aimScreenPos.y, 0));
             aimPos.z = 0;
             return aimPos;
+        }
+
+        private int UpdateSelectedIndex(int index, int otherIndex)
+        {
+            index += index + 1 == this.playerData.runes.Count ? -index : 1;
+            if (index == otherIndex) { index = (index + 1) % this.playerData.runes.Count; }
+
+            return index;
         }
     }
 }
