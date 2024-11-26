@@ -1,11 +1,11 @@
-using Root.Player;
-using Root.EditorExtensions.PropertyDrawers;
-using Root.Projectiles;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEditor.Animations;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.Events;
+using Root.PropertyAttributes;
+using Root.Projectiles;
+using Root.Player;
 
 namespace Root.Runes
 {
@@ -36,8 +36,8 @@ namespace Root.Runes
         private void Start()
         {
             this.effectDuration = this.effectType == RuneEffectTypes.EffectOnPlayer ? this.effectOnPlayer.duration : this.effectOnEnemy.duration;
-            this.spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-            this.spriteRenderer.enabled = false;
+            //this.spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+            //this.spriteRenderer.enabled = false;
         }
         
         private void Update() 
@@ -73,7 +73,7 @@ namespace Root.Runes
                 return;
             }
 
-            this.spriteRenderer.enabled = true;
+            //this.spriteRenderer.enabled = true;
             this.applyOnPlayer.AddListener(player.AddStatus);
 
             switch (this.effectType)
@@ -98,7 +98,7 @@ namespace Root.Runes
 
         public void OnEffectAnimationEnd() 
         {
-            this.spriteRenderer.enabled = false;
+            //this.spriteRenderer.enabled = false;
             switch (this.effectType)
             {
                 case RuneEffectTypes.EffectOnPlayer:
@@ -147,7 +147,7 @@ namespace Root.Runes
 
             if (!this.TryGetComponent(out SpriteRenderer spr)) 
             {
-                this.gameObject.AddComponent<SpriteRenderer>();
+                this.spriteRenderer = this.gameObject.AddComponent<SpriteRenderer>();
                 Debug.Log("Added SpriteRenderer component so animations are supported.");
             }
         }

@@ -33,6 +33,7 @@ namespace Root.Player
             this.changeRight.Enable();
             this.aim.Enable();
 
+            this.leftSelected = this.playerData.runes[0]; 
             foreach (Rune rune in this.playerData.runes) 
             {
                 Instantiate(rune, this.transform.position, Quaternion.identity, this.transform);

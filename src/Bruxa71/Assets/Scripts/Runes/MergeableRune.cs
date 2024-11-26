@@ -1,5 +1,5 @@
 using UnityEngine;
-using Root.EditorExtensions.PropertyDrawers;
+using Root.PropertyAttributes;
 using System;
 
 namespace Root.Runes

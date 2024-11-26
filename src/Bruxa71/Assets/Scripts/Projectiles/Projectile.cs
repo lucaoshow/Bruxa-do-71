@@ -1,4 +1,4 @@
-using Root.EditorExtensions.PropertyDrawers;
+using Root.PropertyAttributes;
 using UnityEngine;
 
 namespace Root.Projectiles 
@@ -66,6 +66,8 @@ namespace Root.Projectiles
                 Destroy(this.gameObject);
                 if (this.circularTrajectory) { Destroy(this.rotateAround.gameObject); }
             }
+            
+            this.timeAlive += Time.deltaTime;
         }
 
         public void SetDirection(Vector3 direction) 
