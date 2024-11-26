@@ -352,8 +352,12 @@ GameObject:
   - component: {fileID: 927102881}
   - component: {fileID: 927102880}
   - component: {fileID: 927102882}
-  - component: {fileID: 927102879}
   - component: {fileID: 927102878}
+  - component: {fileID: 927102879}
+  - component: {fileID: 927102883}
+  - component: {fileID: 927102884}
+  - component: {fileID: 927102885}
+  - component: {fileID: 927102886}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Untagged
@@ -374,6 +378,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 927102879}
+  interactionHandler: {fileID: 927102885}
+  runesManager: {fileID: 927102883}
+  inputActions: {fileID: -944628639613478452, guid: 465ca14644098924398dfb0c42724f61, type: 3}
 --- !u!114 &927102879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,10 +393,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9aa5d6554e77343b05247b02055205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 927102880}
-  moveSpeed: 1
+  playerData: {fileID: 11400000, guid: c79e2ef0a4d87794cb6b9b614b7f71b0, type: 2}
   maxSecondsToStop: 0.5
-  secondsToTurn: 0.18
+  rigidBody: {fileID: 927102880}
 --- !u!50 &927102880
 Rigidbody2D:
   serializedVersion: 4
@@ -426,7 +432,7 @@ Transform:
   m_GameObject: {fileID: 927102877}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06833869, y: -0.011446863, z: 0.037031673}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -484,6 +490,103 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &927102883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927102877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc6a3762c4776440ac6de063732bccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActions: {fileID: -944628639613478452, guid: 465ca14644098924398dfb0c42724f61, type: 3}
+  playerData: {fileID: 11400000, guid: c79e2ef0a4d87794cb6b9b614b7f71b0, type: 2}
+--- !u!95 &927102884
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927102877}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &927102885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927102877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38805e41bdcbb4a408ea77517247abff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forcedInteractionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 927102878}
+        m_TargetAssemblyTypeName: Root.Player.PlayerStateMachine, Assembly-CSharp
+        m_MethodName: OnForcedInteraction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!58 &927102886
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927102877}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
